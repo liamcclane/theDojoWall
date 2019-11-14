@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- improting bootstrap -->
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- improting personalize css styling -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'dashboard/css/master.css' %}">    
+    <title>The Wall</title>
+</head>
+
+<body>
+    <div class="container">
+
+        <nav class="navbar fixed-top navbar-light bg-dark">
+            <h4 class="text-light">The Dojo Wall</h4>
+            <a href="/logout" class="btn btn-secondary btn-small text-right">Log Out</a>
+        </nav>
+
+
+
+        <h1 class="col mt-4">{{ greeting }} To the WALL {{ user.first_name }}</h1>
+
+        <form action="/createPost" class="form-group" method="POST">
+
+            {% csrf_token %}
+
+            <!-- you have the users ID from session -->
+            <h3>Create a New post</h3>
+            <textarea name="content" class="form-control" placeholder='what you want to post here'></textarea>
+            <input type="submit" class="btn btn-small btn-outline-primary m-2" value="Add a post">
+
+        </form>
+
+        {% for singlePost in posts %}
+
+        <div class="media mt-3">
+            <div class="media-body">
+
+                <h6>
+                    {{singlePost.poster.first_name}} {{singlePost.poster.last_name}} {{ singlePost.created_at }}
+
+                    {% if singlePost.poster.id == user.id %}
+                    <a type="button" href='/delete/post/{{singlePost.id}}' class="close" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </a>
+                    {% endif %}
+
+                </h6>
+                <p>{{ singlePost.content }} </p>
+                <p>{{singlePost.created_at}}</p>
+
+
+                {% for comment in comments %}
+
+                {% if comment.post.id == singlePost.id %}
+
+
+                <div class="media mt-3">
+
+                    <div class="media-body ml-3">
+
+                        <div class="media-body ml-3">
+
+                            <h6>
+                                {{ comment.commentor.first_name }} {{ comment.commentor.last_name }}
+                                {{ comment.created_at }}
+
+                                {% if comment.commentor.id == user.id %}
+                                <a type="button" href='/delete/comment/{{comment.id}}' class="close" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </a>
+                                {% endif %}
+
+                            </h6>
+
+                            <p>{{ comment.content }}</p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                {% endif %}
+
+                {% endfor %}
+                <form action="/createComment" class="form-group" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name='postId' value="{{ singlePost.id }}">
+
+                    <textarea name="content" class="form-control"
+                        placeholder="what you want to comment here"></textarea>
+
+                    <input type="submit" value="Make a comment" class="btn btn-small btn-outline-primary m-2">
+
+                </form>
+            </div>
+
+        </div>
+
+
+        {% endfor %}
+
+
+    </div>
+</body>
+
+</html>

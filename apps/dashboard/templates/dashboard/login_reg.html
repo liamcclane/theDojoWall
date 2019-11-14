@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- improting bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- improting personalize css styling -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'dahsboard/css/master.css' %}">    
+    <title>Reg/Signin</title>
+</head>
+
+<body>
+    <div class="container-fliud">
+
+        <div class="row justify-content-around">
+
+            <div class="col-5">
+
+                <h1 class="text-center">Registration</h1>
+
+
+                <form action="/register" method='POST' class="form-group">
+
+                    {% csrf_token %}
+
+
+                    <div class="row mt-3">
+                        <p class="col">First Name :</p>
+                        <input type="text" class="col form-control" name='first_name'>
+
+                    </div>
+                    
+                    <div class="row text-right">
+                        <p class="text-danger">{{ first_name }}</p>
+                    </div>
+
+                    <div class="row mt-3">
+                        <p class="col">Last Name : </p>
+                        <input type="text" class="col form-control" name="last_name">
+
+                    </div>
+
+                    <div class="row text-right">
+                        <p class="text-danger">{{ last_name }}</p>
+                    </div>
+
+                    <div class="row mt-3">
+                        <p class="col">Email :</p>
+                        <input type="text" class="col form-control" name='email'>
+
+                    </div>
+
+                    <div class="row text-right">
+                        <p class="text-danger">{{ email }}</p>
+                    </div>
+
+
+                    <div class="row text-right">
+                        <p class="text-danger">{{ notUniqueEmail }}</p>
+                    </div>
+
+                    <div class="row text-right">
+                        <p class="text-danger">{{ misMatch }}</p>
+                    </div>
+
+                    <div class="row text-right">
+                        <p class="text-danger">{{ shortPassword }}</p>
+                    </div>
+
+                    <div class="row mt-3">
+                        <p class="col">Password</p>
+                        <input type="password" class="col form-control" name="password">
+                    </div>
+
+
+                    <div class="row mt-3">
+                        <p class="col">Confirm PW</p>
+                        <input type="password" class="col form-control" name="password2">
+
+                    </div>
+
+
+                    <input type="submit" value="Register" class="btn btn-small btn-outline-success">
+
+                </form>
+
+            </div>
+
+
+
+            <div class="col-5">
+                <h1 class="text-center">Login</h1>
+
+                <form action="/login" method="POST">
+
+                    <div class="form-group">
+
+                        {% csrf_token %}
+
+                        <div class="row mt-3">
+
+                            <p class="col">Email</p>
+                            <input type="text" name="email" class="col form-control">
+
+                        </div>
+
+                        <div class="row mt-3">
+
+                            <p class="col">Password</p>
+                            <input type="password" name='hashPw' class="col form-control">
+
+                        </div>
+
+                        <div class="row text-right">
+                            <p class="text-danger">{{ wrongPw }}</p>
+                        </div>
+
+                    </div>
+                    <input type="submit" value='Login' class="btn btn-small btn-outline-success">
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
